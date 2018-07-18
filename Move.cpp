@@ -4,20 +4,26 @@
 
 #include <iostream>
 #include "Move.h"
+
 void Move::playGame(){
   b.drawBoard();
-  int count=0;
-  while(count!=5)
+  while(!w.winCondition(b))
   {
     getValidMove();
     makeMove();
     b.drawBoard();
     changeTurn();
-    count++;
   }
-
+  w.declareWinner(b,turn);
 }
 void Move::makeMove() {
+  char pieces[]={'X','O'};
+  for(int i=5; i>=0; i--){
+    if(b.boardCord[i][location-1]==" "){
+      b.boardCord[i][location-1]=pieces[turn];
+      break;
+    }
+  }
 }
 void Move::changeTurn() {
   turn++;
@@ -32,7 +38,20 @@ Move::Move() {
 void Move::getValidMove() {
   do{
     std::cout << "Player " << turn+1
-              << " choose where to place your piece" << std::endl;
+              << " enter a column between 1 and 7 to play your piece" << std::endl;
     std::cin >> location;
-  }while(location<0  && location>8);
+  }while(!validMove());
 }
+bool Move::validMove() {
+  if(location<0 || location>8) {
+    return false;
+  }
+  if(b.boardCord[0][location-1]!=" ") {
+    return false;
+  }
+  return true;
+}
+const Board &Move::getB() const {
+  return b;
+}
+

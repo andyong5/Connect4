@@ -7,13 +7,14 @@
 
 #include <string>
 #include "Board.h"
+#include "Win.h"
 class Move {
  public:
   Move();
   void playGame();
   void changeTurn();
   void getValidMove();
-  void validLocation();
+  bool validMove();
   void makeMove();
   int getTurn();
  private:
@@ -21,7 +22,11 @@ class Move {
   int location;
   std::string p1;
   std::string p2;
+ public:
+  const Board &getB() const;
+ private:
   Board b;
+  Win w;
 };
 
 #endif //CONNECT4_MOVE_H
